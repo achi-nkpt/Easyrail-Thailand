@@ -72,14 +72,14 @@
         .step:not(:last-child)::after { content: ''; position: absolute; left: 24px; top: 50px; bottom: -20px; width: 4px; background: #dfe4ea; border-radius: 2px; }
         .step-icon { width: 50px; height: 50px; border-radius: 50%; background: white; border: 3px solid #dfe4ea; display: flex; justify-content: center; align-items: center; font-size: 1.4rem; z-index: 2; flex-shrink: 0; }
         
-        /* MAP MODAL (FIXED VISIBILITY) */
+        /* MAP MODAL (FIXED) */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; }
         .modal-content { 
-            background: white; /* FIXED: White background ensures transparent map is visible */
-            padding: 10px;
-            border-radius: 8px; 
-            max-width: 95%; 
-            max-height: 90%; 
+            background: white; 
+            padding: 5px;
+            border-radius: 4px; 
+            max-width: 98%; 
+            max-height: 95%; 
             overflow: auto; 
             position: relative; 
         }
@@ -198,13 +198,15 @@
         // MRT Purple
         {name: "Tao Poon (MRT)", type: "MRT"}, {name: "Bang Yai (MRT)", type: "MRT"},
         // Airport & Red
-        {name: "Suvarnabhumi (ARL)", type: "Airport"}, {name: "Makkasan (ARL)", type: "Airport"}, {name: "Phaya Thai (ARL)", type: "Airport"},
+        {name: "Suvarnabhumi (ARL)", type: "Airport"}, {name: "Lat Krabang (ARL)", type: "Airport"}, // Added Lat Krabang
+        {name: "Makkasan (ARL)", type: "Airport"}, {name: "Phaya Thai (ARL)", type: "Airport"},
         {name: "Don Mueang (Red)", type: "Airport"}, {name: "Bang Sue (Red)", type: "Airport"}, {name: "Rangsit (Red)", type: "Airport"},
         // Monorails
         {name: "Lat Phrao (Yellow)", type: "Monorail"}, {name: "Samrong (Yellow)", type: "Monorail"}, 
         {name: "Min Buri (Pink)", type: "Monorail"}, {name: "Nonthaburi (Pink)", type: "Monorail"},
         {name: "Charoen Nakhon (Gold)", type: "Monorail"},
         // DIESEL / INTERCITY
+        {name: "Lat Krabang (SRT)", type: "SRT"}, // Added Lat Krabang
         {name: "Ayutthaya (SRT)", type: "SRT"}, {name: "Lopburi (SRT)", type: "SRT"}, {name: "Chiang Mai (SRT)", type: "SRT"},
         {name: "Hua Hin (SRT)", type: "SRT"}, {name: "Surat Thani (SRT)", type: "SRT"}, {name: "Kanchanaburi (SRT)", type: "SRT"},
         {name: "Pattaya (SRT)", type: "SRT"}, {name: "Nong Khai (SRT)", type: "SRT"}, {name: "Ubon Ratchathani (SRT)", type: "SRT"},
@@ -264,27 +266,67 @@
     }
 
     function findRoute() {
-        const start = document.getElementById('start').value;
-        let end = document.getElementById('end').value;
+        const start = document.getElementById('start').value.trim();
+        let end = document.getElementById('end').value.trim();
         const resBox = document.getElementById('result');
 
-        if (!start || !end) { alert("Please fill in both boxes."); return; }
+        // Check if empty
+        if (!start || !end) { 
+            alert("Please fill in both boxes."); 
+            return; 
+        }
+
+        // --- VALIDATION: CHECK IF STATION EXISTS ---
+        // Helper to check existence in database
+        const stationExists = (name) => allStationsData.some(s => s.name === name);
+
+        // 1. Validate Start Station
+        if (!stationExists(start)) {
+            resBox.style.display = 'block';
+            resBox.innerHTML = `
+                <div style="text-align:center; padding:20px;">
+                    <div style="font-size:3rem;">😕</div>
+                    <h3 style="color:#e74c3c;">Start Station Not Found</h3>
+                    <p style="color:#7f8c8d;">"${start}" is not in our database. Please select from the list.</p>
+                </div>`;
+            return;
+        }
 
         let landmarkNote = "";
+        
+        // 2. Validate End (Landmark Mode)
         if (searchMode === 'landmark') {
             let found = false;
             const lowerEnd = end.toLowerCase();
             for (let place in landmarks) {
                 if (lowerEnd.includes(place) || place.includes(lowerEnd)) {
                     landmarkNote = `📍 Walk to ${end}`;
-                    end = landmarks[place];
+                    end = landmarks[place]; // Convert to station name
                     found = true;
                     break;
                 }
             }
             if (!found) {
                 resBox.style.display = 'block';
-                resBox.innerHTML = `<p style="color:red; text-align:center;">Landmark not found. Try "Siam Paragon".</p>`;
+                resBox.innerHTML = `
+                    <div style="text-align:center; padding:20px;">
+                        <div style="font-size:3rem;">🏛️</div>
+                        <h3 style="color:#e74c3c;">Landmark Not Found</h3>
+                        <p style="color:#7f8c8d;">We couldn't find "${end}". Try "Siam Paragon" or "Airport".</p>
+                    </div>`;
+                return;
+            }
+        } 
+        // 3. Validate End (Station Mode)
+        else {
+            if (!stationExists(end)) {
+                resBox.style.display = 'block';
+                resBox.innerHTML = `
+                    <div style="text-align:center; padding:20px;">
+                        <div style="font-size:3rem;">😕</div>
+                        <h3 style="color:#e74c3c;">Destination Not Found</h3>
+                        <p style="color:#7f8c8d;">"${end}" is not in our database. Please select from the list.</p>
+                    </div>`;
                 return;
             }
         }
@@ -292,6 +334,7 @@
         const line = getLine(start);
         const endLine = getLine(end);
         
+        // Success Result
         resBox.style.display = 'block';
         resBox.innerHTML = `
             <div class="trip-summary">
