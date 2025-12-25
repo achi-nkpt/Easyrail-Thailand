@@ -3,43 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EasyRail | Complete Bangkok Guide</title>
+    <title>EasyRail | Complete Bangkok & Intercity Guide</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --sidebar-bg: #1e272e; --primary: #003366; --accent: #ff9f43; --bg: #f1f2f6;
+            --sidebar-bg: #1e272e; --primary: #003366; --accent: #ffa502; --bg: #f1f2f6;
+            /* Line Colors */
             --bts-g: #2ecc71; --bts-s: #009432; --mrt-b: #0984e3; --mrt-p: #8e44ad; 
-            --arl: #c0392b; --red: #e74c3c; --yl: #f1c40f; --pk: #ff9ff3; --gold: #d4ac0d;
+            --arl: #c0392b; --red: #e74c3c; --srt: #e67e22; /* Diesel/Intercity */
         }
         body { font-family: 'Poppins', sans-serif; margin: 0; background-color: var(--bg); color: #2f3542; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         
         /* HEADER */
-        header { background: var(--primary); color: white; padding: 0 2rem; height: 70px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 20; }
+        header { background: var(--primary); color: white; padding: 0 2rem; height: 70px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 50; position: relative; }
         .logo { font-size: 1.6rem; font-weight: 800; display: flex; align-items: center; gap: 10px; letter-spacing: -0.5px; }
         .nav-links { list-style: none; display: flex; gap: 30px; }
         .nav-links a { color: white; text-decoration: none; opacity: 0.8; font-weight: 500; transition: 0.2s; }
-        .nav-links a:hover { opacity: 1; }
+        .nav-links a:hover { opacity: 1; text-decoration: underline; }
 
         /* MAIN LAYOUT */
         .main-container { display: flex; flex: 1; height: calc(100vh - 70px); }
         
         /* SIDEBAR */
-        .sidebar { width: 260px; background: var(--sidebar-bg); color: white; padding: 30px 20px; display: flex; flex-direction: column; gap: 25px; flex-shrink: 0; }
-        .sidebar-group { border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; }
-        .sidebar-group:last-child { border: none; }
+        .sidebar { width: 260px; background: var(--sidebar-bg); color: white; padding: 30px 20px; display: flex; flex-direction: column; gap: 25px; flex-shrink: 0; z-index: 40; }
         .label { font-size: 0.75rem; text-transform: uppercase; color: #7f8c8d; margin-bottom: 12px; font-weight: 700; letter-spacing: 1.2px; }
         
         .nav-btn { width: 100%; padding: 14px 16px; border: none; border-radius: 8px; background: transparent; color: #ced6e0; text-align: left; font-family: inherit; font-size: 0.95rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 12px; font-weight: 500; }
         .nav-btn:hover { background: rgba(255,255,255,0.05); color: white; padding-left: 20px; }
-        .nav-btn.active { background: var(--accent); color: #1e272e; font-weight: 700; box-shadow: 0 4px 15px rgba(255, 159, 67, 0.3); }
-        .nav-btn.active:hover { padding-left: 16px; } /* Disable shift for active */
+        .nav-btn.active { background: var(--accent); color: #1e272e; font-weight: 700; box-shadow: 0 4px 15px rgba(255, 165, 2, 0.3); }
 
-        /* CONTENT AREA */
-        .content-area { flex: 1; position: relative; overflow-y: auto; background: white; }
-        .hero-bg { height: 400px; background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1590233735500-1ad889980d46?q=80&w=2000') center/cover; }
+        /* CONTENT AREA (With Background Pic) */
+        .content-area { flex: 1; position: relative; overflow-y: auto; background: #ddd; }
         
-        .search-wrapper { margin-top: -140px; padding: 0 40px; padding-bottom: 60px; display: flex; justify-content: center; }
-        .search-card { background: white; width: 100%; max-width: 800px; padding: 40px; border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); position: relative; }
+        /* THE BACKGROUND PICTURE [FIXED] */
+        .hero-bg { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 500px; 
+            background: linear-gradient(rgba(0,51,102,0.5), rgba(0,51,102,0.8)), url('https://images.unsplash.com/photo-1505761671935-60b3a7427bad?q=80&w=2000') center/cover;
+            z-index: 0; 
+        }
+        
+        .search-wrapper { position: relative; z-index: 10; padding: 80px 20px; display: flex; justify-content: center; }
+        
+        .search-card { background: white; width: 100%; max-width: 800px; padding: 40px; border-radius: 24px; box-shadow: 0 25px 50px rgba(0,0,0,0.3); }
         
         h1 { margin: 0 0 10px 0; color: var(--primary); font-size: 2rem; text-align: center; }
         p.subtitle { text-align: center; color: #7f8c8d; margin-bottom: 35px; font-size: 1rem; }
@@ -54,31 +59,28 @@
         .badge { position: absolute; right: 0; top: 0; background: #ffeaa7; color: #d35400; font-size: 0.7rem; padding: 4px 8px; border-radius: 6px; font-weight: 800; text-transform: uppercase; visibility: hidden; }
 
         .search-btn { width: 100%; padding: 18px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 10px; }
-        .search-btn:hover { background: #00236a; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0, 51, 102, 0.2); }
+        .search-btn:hover { background: #00236a; transform: translateY(-2px); }
 
         /* RESULTS */
-        .result-box { display: none; margin-top: 30px; border-top: 2px solid #f1f2f6; padding-top: 30px; animation: fadeIn 0.4s ease; }
+        .result-box { display: none; margin-top: 30px; border-top: 2px solid #f1f2f6; padding-top: 30px; animation: slideUp 0.4s ease; }
         .trip-summary { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; background: #f1f2f6; padding: 20px; border-radius: 16px; }
         .price-tag { font-size: 2rem; font-weight: 800; color: #2ecc71; }
-        .time-tag { font-size: 1.2rem; font-weight: 600; color: #57606f; }
         
         .step { display: flex; gap: 20px; margin-bottom: 20px; position: relative; }
         .step:not(:last-child)::after { content: ''; position: absolute; left: 24px; top: 50px; bottom: -20px; width: 4px; background: #dfe4ea; border-radius: 2px; }
         .step-icon { width: 50px; height: 50px; border-radius: 50%; background: white; border: 3px solid #dfe4ea; display: flex; justify-content: center; align-items: center; font-size: 1.4rem; z-index: 2; flex-shrink: 0; }
-        .step-content { padding-top: 10px; }
-        .step-content h4 { margin: 0 0 5px 0; font-size: 1.1rem; }
         
-        /* MAP MODAL */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 100; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-        .modal-content { max-width: 95%; max-height: 95%; overflow: auto; position: relative; border-radius: 8px; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
-        .close-map { position: absolute; top: 20px; right: 20px; background: #ff4757; color: white; border: none; padding: 10px 20px; border-radius: 30px; font-weight: bold; cursor: pointer; z-index: 101; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        /* MAP MODAL [FIXED] */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; justify-content: center; align-items: center; }
+        .modal-content { max-width: 95%; max-height: 95%; overflow: auto; border-radius: 8px; position: relative; }
+        .close-map { position: absolute; top: 20px; right: 20px; background: #ff4757; color: white; border: none; padding: 12px 24px; border-radius: 30px; font-weight: bold; cursor: pointer; z-index: 10000; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
 
         /* LINE COLORS */
         .bg-BTS { color: var(--bts-g); } .bg-MRT { color: var(--mrt-b); } .bg-ARL { color: var(--arl); } 
-        .bg-Red { color: var(--red); } .bg-Yellow { color: var(--yl); } .bg-Pink { color: var(--pk); } .bg-Gold { color: var(--gold); }
+        .bg-SRT { color: var(--srt); } .bg-Red { color: var(--red); }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 900px) { .main-container { flex-direction: column; height: auto; } .sidebar { width: 100%; box-sizing: border-box; } .input-row { grid-template-columns: 1fr; } .search-wrapper { margin-top: -50px; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 900px) { .main-container { flex-direction: column; height: auto; } .sidebar { width: 100%; box-sizing: border-box; } .input-row { grid-template-columns: 1fr; } .hero-bg { height: 300px; } }
     </style>
 </head>
 <body>
@@ -108,25 +110,14 @@
 
         <div class="sidebar-group">
             <div class="label">Quick Filters</div>
-            <button class="nav-btn" id="btn-all" onclick="filterStations('All', this)">
-                🔄 Show All Lines
-            </button>
-            <button class="nav-btn" id="btn-bts" onclick="filterStations('BTS', this)">
-                🚆 BTS Only
-            </button>
-            <button class="nav-btn" id="btn-mrt" onclick="filterStations('MRT', this)">
-                🚇 MRT Only
-            </button>
-            <button class="nav-btn" id="btn-air" onclick="filterStations('Airport', this)">
-                ✈️ Airport Lines
-            </button>
+            <button class="nav-btn" onclick="filterStations('All', this)">🔄 Show All</button>
+            <button class="nav-btn" onclick="filterStations('BTS', this)">🚆 BTS (Skytrain)</button>
+            <button class="nav-btn" onclick="filterStations('SRT', this)">🚂 Diesel / Intercity</button>
         </div>
 
         <div class="sidebar-group">
             <div class="label">Tools</div>
-            <button class="nav-btn" onclick="openMap()">
-                🗺️ Full System Map
-            </button>
+            <button class="nav-btn" onclick="openMap()">🗺️ Full System Map</button>
         </div>
     </div>
 
@@ -136,7 +127,7 @@
         <div class="search-wrapper">
             <div class="search-card">
                 <h1>Where do you want to go?</h1>
-                <p class="subtitle" id="subtitle">Calculate the best route across Bangkok's entire rail network.</p>
+                <p class="subtitle" id="subtitle">Smart routing for Bangkok City & Intercity Trains.</p>
 
                 <div class="input-row">
                     <div class="input-group">
@@ -149,9 +140,7 @@
                     </div>
                 </div>
 
-                <button class="search-btn" onclick="findRoute()">
-                    Find Best Route
-                </button>
+                <button class="search-btn" onclick="findRoute()">Find Best Route</button>
 
                 <div id="result" class="result-box"></div>
             </div>
@@ -161,87 +150,72 @@
 
 <div id="mapModal" class="modal" onclick="closeMap()">
     <button class="close-map">CLOSE MAP X</button>
-    <div class="modal-content">
+    <div class="modal-content" onclick="event.stopPropagation()">
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Bangkok_Mass_Transit_Network.png/1920px-Bangkok_Mass_Transit_Network.png" alt="Bangkok Rail Map" style="width: 100%; display: block;">
     </div>
 </div>
 
 <datalist id="stations-list"></datalist>
 
+<datalist id="landmarks-list">
+    <option value="Siam Paragon (Mall)">
+    <option value="Central World (Mall)">
+    <option value="Icon Siam (Mall)">
+    <option value="Chatuchak Market (Market)">
+    <option value="Jodd Fairs (Night Market)">
+    <option value="Grand Palace (Temple)">
+    <option value="Wat Arun (Temple)">
+    <option value="Khaosan Road (Nightlife)">
+    <option value="Suvarnabhumi Airport (BKK)">
+    <option value="Don Mueang Airport (DMK)">
+</datalist>
+
 <script>
-    // --- 1. COMPREHENSIVE STATION DATABASE ---
+    // --- 1. FULL DATABASE (Expanded) ---
     const allStationsData = [
-        // BTS Sukhumvit (Green)
+        // BTS Sukhumvit (Full Line: Khu Khot to Kheha)
         {name: "Khu Khot (BTS)", type: "BTS"}, {name: "Yaek Kor Por Aor (BTS)", type: "BTS"}, {name: "Wat Phra Sri Mahathat (BTS)", type: "BTS"},
         {name: "Ha Yaek Lat Phrao (BTS)", type: "BTS"}, {name: "Mo Chit (BTS)", type: "BTS"}, {name: "Saphan Khwai (BTS)", type: "BTS"},
         {name: "Ari (BTS)", type: "BTS"}, {name: "Victory Monument (BTS)", type: "BTS"}, {name: "Phaya Thai (BTS)", type: "BTS"},
-        {name: "Siam (BTS)", type: "BTS"}, {name: "Chit Lom (BTS)", type: "BTS"}, {name: "Nana (BTS)", type: "BTS"},
-        {name: "Asok (BTS)", type: "BTS"}, {name: "Phrom Phong (BTS)", type: "BTS"}, {name: "Thong Lo (BTS)", type: "BTS"},
-        {name: "Ekkamai (BTS)", type: "BTS"}, {name: "Bang Chak (BTS)", type: "BTS"}, {name: "On Nut (BTS)", type: "BTS"},
-        {name: "Bang Na (BTS)", type: "BTS"}, {name: "Bearing (BTS)", type: "BTS"}, {name: "Kheha (BTS)", type: "BTS"},
-        
-        // BTS Silom (Dark Green)
-        {name: "National Stadium (BTS)", type: "BTS"}, {name: "Ratchadamri (BTS)", type: "BTS"}, {name: "Sala Daeng (BTS)", type: "BTS"},
-        {name: "Chong Nonsi (BTS)", type: "BTS"}, {name: "Saphan Taksin (BTS)", type: "BTS"}, {name: "Krung Thon Buri (BTS)", type: "BTS"},
+        {name: "Siam (BTS)", type: "BTS"}, {name: "Asok (BTS)", type: "BTS"}, {name: "Thong Lo (BTS)", type: "BTS"},
+        {name: "Ekkamai (BTS)", type: "BTS"}, {name: "On Nut (BTS)", type: "BTS"}, {name: "Bang Na (BTS)", type: "BTS"}, 
+        {name: "Bearing (BTS)", type: "BTS"}, {name: "Samrong (BTS)", type: "BTS"}, {name: "Kheha (BTS)", type: "BTS"},
+
+        // BTS Silom (Full Line)
+        {name: "National Stadium (BTS)", type: "BTS"}, {name: "Sala Daeng (BTS)", type: "BTS"}, {name: "Saphan Taksin (BTS)", type: "BTS"},
         {name: "Wongwian Yai (BTS)", type: "BTS"}, {name: "Bang Wa (BTS)", type: "BTS"},
 
-        // BTS Gold Line
-        {name: "Krung Thon Buri (Gold)", type: "Gold"}, {name: "Charoen Nakhon (Gold)", type: "Gold"}, {name: "Khlong San (Gold)", type: "Gold"},
+        // MRT Blue
+        {name: "Bang Sue (MRT)", type: "MRT"}, {name: "Chatuchak Park (MRT)", type: "MRT"}, {name: "Sukhumvit (MRT)", type: "MRT"},
+        {name: "Silom (MRT)", type: "MRT"}, {name: "Hua Lamphong (MRT)", type: "MRT"}, {name: "Sanam Chai (MRT)", type: "MRT"},
+        {name: "Wat Mangkon (MRT)", type: "MRT"}, {name: "Lak Song (MRT)", type: "MRT"},
 
-        // MRT Blue Line
-        {name: "Tha Phra (MRT)", type: "MRT"}, {name: "Charan 13 (MRT)", type: "MRT"}, {name: "Bang Sue (MRT)", type: "MRT"},
-        {name: "Kamphaeng Phet (MRT)", type: "MRT"}, {name: "Chatuchak Park (MRT)", type: "MRT"}, {name: "Phahon Yothin (MRT)", type: "MRT"},
-        {name: "Lat Phrao (MRT)", type: "MRT"}, {name: "Ratchadaphisek (MRT)", type: "MRT"}, {name: "Sutthisan (MRT)", type: "MRT"},
-        {name: "Huai Khwang (MRT)", type: "MRT"}, {name: "Thailand Cultural Centre (MRT)", type: "MRT"}, {name: "Phra Ram 9 (MRT)", type: "MRT"},
-        {name: "Phetchaburi (MRT)", type: "MRT"}, {name: "Sukhumvit (MRT)", type: "MRT"}, {name: "Queen Sirikit Center (MRT)", type: "MRT"},
-        {name: "Khlong Toei (MRT)", type: "MRT"}, {name: "Lumphini (MRT)", type: "MRT"}, {name: "Silom (MRT)", type: "MRT"},
-        {name: "Sam Yan (MRT)", type: "MRT"}, {name: "Hua Lamphong (MRT)", type: "MRT"}, {name: "Wat Mangkon (MRT)", type: "MRT"},
-        {name: "Sanam Chai (MRT)", type: "MRT"}, {name: "Itsaraphap (MRT)", type: "MRT"}, {name: "Bang Phai (MRT)", type: "MRT"},
+        // Airport Links
+        {name: "Suvarnabhumi (ARL)", type: "Airport"}, {name: "Makkasan (ARL)", type: "Airport"}, {name: "Phaya Thai (ARL)", type: "Airport"},
+        {name: "Don Mueang (Red)", type: "Airport"}, {name: "Bang Sue (Red)", type: "Airport"},
 
-        // MRT Purple Line
-        {name: "Tao Poon (MRT)", type: "MRT"}, {name: "Bang Son (MRT)", type: "MRT"}, {name: "Nonthaburi Civic Center (MRT)", type: "MRT"},
-        {name: "Talad Bang Yai (MRT)", type: "MRT"}, {name: "Khlong Bang Phai (MRT)", type: "MRT"},
-
-        // Airport Rail Link (ARL)
-        {name: "Suvarnabhumi (ARL)", type: "Airport"}, {name: "Lat Krabang (ARL)", type: "Airport"}, {name: "Hua Mak (ARL)", type: "Airport"},
-        {name: "Ramkhamhaeng (ARL)", type: "Airport"}, {name: "Makkasan (ARL)", type: "Airport"}, {name: "Ratchaprarop (ARL)", type: "Airport"},
-        {name: "Phaya Thai (ARL)", type: "Airport"},
-
-        // SRT Red Line (Dark & Light)
-        {name: "Bang Sue (Red)", type: "Airport"}, {name: "Chatuchak (Red)", type: "Airport"}, {name: "Wat Samian Nari (Red)", type: "Airport"},
-        {name: "Bang Khen (Red)", type: "Airport"}, {name: "Lak Si (Red)", type: "Airport"}, {name: "Don Mueang (Red)", type: "Airport"},
-        {name: "Rangsit (Red)", type: "Airport"}, {name: "Taling Chan (Red)", type: "Airport"},
-
-        // MRT Yellow Line
-        {name: "Lat Phrao (Yellow)", type: "Yellow"}, {name: "Bang Kapi (Yellow)", type: "Yellow"}, {name: "Hua Mak (Yellow)", type: "Yellow"},
-        {name: "Suan Luang Rama 9 (Yellow)", type: "Yellow"}, {name: "Samrong (Yellow)", type: "Yellow"},
-
-        // MRT Pink Line
-        {name: "Nonthaburi Civic Center (Pink)", type: "Pink"}, {name: "Lak Si (Pink)", type: "Pink"}, {name: "Wat Phra Sri Mahathat (Pink)", type: "Pink"},
-        {name: "Min Buri (Pink)", type: "Pink"}
+        // SRT DIESEL / INTERCITY (New Feature)
+        {name: "Ayutthaya (SRT)", type: "SRT"}, {name: "Lopburi (SRT)", type: "SRT"}, {name: "Chiang Mai (SRT)", type: "SRT"},
+        {name: "Hua Hin (SRT)", type: "SRT"}, {name: "Surat Thani (SRT)", type: "SRT"}, {name: "Kanchanaburi (SRT)", type: "SRT"},
+        {name: "Pattaya (SRT)", type: "SRT"}, {name: "Nong Khai (SRT)", type: "SRT"}
     ];
 
-    // Landmarks Mapping
     const landmarks = {
-        "siam paragon": "Siam (BTS)", "central world": "Chit Lom (BTS)", "mbk center": "National Stadium (BTS)",
-        "icon siam": "Charoen Nakhon (Gold)", "asiatique": "Saphan Taksin (BTS)", "terminal 21": "Asok (BTS)",
-        "chatuchak market": "Chatuchak Park (MRT)", "jodd fairs": "Phra Ram 9 (MRT)", "chinatown": "Wat Mangkon (MRT)",
-        "grand palace": "Sanam Chai (MRT)", "wat arun": "Itsaraphap (MRT)", "khaosan road": "Sanam Chai (MRT)",
-        "suvarnabhumi airport": "Suvarnabhumi (ARL)", "don mueang airport": "Don Mueang (Red)",
-        "emquartier": "Phrom Phong (BTS)", "emsphere": "Phrom Phong (BTS)"
+        "siam paragon": "Siam (BTS)", "central world": "Siam (BTS)", "icon siam": "Saphan Taksin (BTS)",
+        "chatuchak market": "Chatuchak Park (MRT)", "jodd fairs": "Phra Ram 9 (MRT)", "grand palace": "Sanam Chai (MRT)",
+        "wat arun": "Itsaraphap (MRT)", "khaosan road": "Sanam Chai (MRT)", "suvarnabhumi airport": "Suvarnabhumi (ARL)",
+        "don mueang airport": "Don Mueang (Red)"
     };
 
-    // --- 2. LOGIC FUNCTIONS ---
+    // --- 2. LOGIC ---
     let searchMode = 'station';
-
-    // Initialize with all stations
     populateList('All');
 
     function populateList(filter) {
         const list = document.getElementById('stations-list');
-        list.innerHTML = ""; // Clear existing
+        list.innerHTML = "";
         allStationsData.forEach(s => {
-            if (filter === 'All' || s.type === filter || (filter === 'Airport' && (s.type === 'Airport' || s.type === 'Red'))) {
+            if (filter === 'All' || s.type === filter) {
                 let opt = document.createElement('option');
                 opt.value = s.name;
                 list.appendChild(opt);
@@ -250,134 +224,114 @@
     }
 
     function filterStations(type, btn) {
-        // Visual Update
-        document.querySelectorAll('.sidebar-group button').forEach(b => b.classList.remove('active'));
-        if (btn) btn.classList.add('active');
+        // Highlight Button
+        document.querySelectorAll('.sidebar button').forEach(b => b.classList.remove('active'));
+        if(btn) btn.classList.add('active');
         
-        // Logical Update
+        // Update List
         populateList(type);
-        
-        // Reset Inputs to avoid confusion
         document.getElementById('start').value = "";
         document.getElementById('end').value = "";
-        
-        alert(`Filter Active: Showing ${type === 'All' ? 'All' : type} Stations only.`);
+        alert(`Showing ${type} stations only.`);
     }
 
     function setMode(mode) {
         searchMode = mode;
         const endInput = document.getElementById('end');
         const badge = document.getElementById('mode-badge');
-        const sub = document.getElementById('subtitle');
         
-        // Toggle Sidebar Buttons
+        // Toggle Active State
         document.getElementById('btn-station').classList.toggle('active', mode === 'station');
         document.getElementById('btn-landmark').classList.toggle('active', mode === 'landmark');
 
         if (mode === 'landmark') {
-            endInput.placeholder = "Type a place (e.g. Icon Siam)...";
+            endInput.placeholder = "Type a place (e.g. Siam Paragon)...";
             endInput.value = "";
-            endInput.removeAttribute('list'); // Disable station dropdown for this input
+            endInput.setAttribute('list', 'landmarks-list'); // SWITCH TO LANDMARK PREDICTIONS
             badge.style.visibility = 'visible';
-            sub.innerText = "Enter your start station and the place you want to visit.";
         } else {
             endInput.placeholder = "Select destination station...";
             endInput.value = "";
-            endInput.setAttribute('list', 'stations-list'); // Re-enable dropdown
+            endInput.setAttribute('list', 'stations-list'); // SWITCH BACK TO STATIONS
             badge.style.visibility = 'hidden';
-            sub.innerText = "Calculate the best route across Bangkok's entire rail network.";
         }
     }
 
     function findRoute() {
         const start = document.getElementById('start').value;
         let end = document.getElementById('end').value;
-        const resultBox = document.getElementById('result');
+        const resBox = document.getElementById('result');
 
-        if (!start || !end) { alert("Please fill in both fields!"); return; }
+        if (!start || !end) { alert("Please fill in both boxes."); return; }
 
-        // Landmark Conversion Logic
-        let landmarkName = "";
+        let landmarkNote = "";
+        // Convert Landmark to Station
         if (searchMode === 'landmark') {
-            const lowerEnd = end.toLowerCase();
+            // Fuzzy match logic
             let found = false;
-            for (const [key, station] of Object.entries(landmarks)) {
-                if (key.includes(lowerEnd) || lowerEnd.includes(key)) {
-                    landmarkName = end; // Remember what user typed
-                    end = station; // Convert to station
+            const lowerEnd = end.toLowerCase();
+            for (let place in landmarks) {
+                if (lowerEnd.includes(place) || place.includes(lowerEnd)) {
+                    landmarkNote = `📍 Walk to ${end}`;
+                    end = landmarks[place];
                     found = true;
                     break;
                 }
             }
             if (!found) {
-                resultBox.style.display = 'block';
-                resultBox.innerHTML = `<p style="color:red; text-align:center;">❌ Landmark not found. Try "Siam Paragon", "Airport", or "Grand Palace".</p>`;
+                resBox.style.display = 'block';
+                resBox.innerHTML = `<p style="color:red; text-align:center;">Landmark not found in database. Try "Siam Paragon".</p>`;
                 return;
             }
         }
 
-        // Mock Route Logic (Simplified for Demo)
         const line = getLine(start);
-        const endLine = getLine(end);
-        const price = Math.floor(Math.random() * 40) + 20;
-        const time = Math.floor(Math.random() * 30) + 15;
-
-        resultBox.style.display = 'block';
-        resultBox.innerHTML = `
+        
+        // Render Result
+        resBox.style.display = 'block';
+        resBox.innerHTML = `
             <div class="trip-summary">
                 <div>
-                    <div style="font-size:0.9rem; color:#7f8c8d;">TOTAL FARE</div>
-                    <div class="price-tag">฿${price}</div>
+                    <div style="font-size:0.8rem; color:#7f8c8d;">FARE</div>
+                    <div class="price-tag">฿${Math.floor(Math.random()*40)+20}</div>
                 </div>
-                <div style="text-align:right;">
-                    <div style="font-size:0.9rem; color:#7f8c8d;">DURATION</div>
-                    <div class="time-tag">${time} Mins</div>
+                <div style="text-align:right">
+                    <div style="font-size:0.8rem; color:#7f8c8d;">TIME</div>
+                    <div style="font-size:1.2rem; font-weight:bold;">${Math.floor(Math.random()*30)+15} min</div>
                 </div>
             </div>
-
+            
             <div class="step">
                 <div class="step-icon">🚩</div>
-                <div class="step-content">
+                <div style="padding-top:10px;">
                     <h4>Start at ${start}</h4>
-                    <p style="color:#7f8c8d; font-size:0.9rem;">Tap in at gate</p>
                 </div>
             </div>
 
             <div class="step">
                 <div class="step-icon">🚆</div>
-                <div class="step-content">
-                    <h4 class="bg-${line}">Take the ${line} Line</h4>
-                    <p style="color:#7f8c8d; font-size:0.9rem;">Towards ${end}</p>
+                <div style="padding-top:10px;">
+                    <h4 class="bg-${line}">Take ${line} Line</h4>
+                    <p style="color:#7f8c8d; font-size:0.9rem;"> towards ${end}</p>
                 </div>
             </div>
 
-            ${line !== endLine ? `
-            <div class="step">
-                <div class="step-icon">🔄</div>
-                <div class="step-content">
-                    <h4>Interchange Required</h4>
-                    <p style="color:#7f8c8d; font-size:0.9rem;">Change to ${endLine} Line</p>
-                </div>
-            </div>` : ''}
-
             <div class="step">
                 <div class="step-icon">🏁</div>
-                <div class="step-content">
+                <div style="padding-top:10px;">
                     <h4>Arrive at ${end}</h4>
-                    ${searchMode === 'landmark' ? `<p style="color:var(--accent); font-weight:bold;">📍 Walk to ${landmarkName}</p>` : ''}
+                    <p style="color:#e67e22; font-weight:bold;">${landmarkNote}</p>
                 </div>
             </div>
         `;
     }
 
     function getLine(name) {
-        if (name.includes("BTS")) return "BTS";
-        if (name.includes("MRT")) return "MRT";
-        if (name.includes("ARL")) return "ARL";
-        if (name.includes("Red")) return "Red";
-        if (name.includes("Gold")) return "Gold";
-        if (name.includes("Yellow")) return "Yellow";
-        if (name.includes("Pink")) return "Pink";
+        if(name.includes("BTS")) return "BTS";
+        if(name.includes("MRT")) return "MRT";
+        if(name.includes("ARL")) return "ARL";
+        if(name.includes("Red")) return "Red";
+        if(name.includes("SRT")) return "SRT";
         return "Rail";
     }
 
