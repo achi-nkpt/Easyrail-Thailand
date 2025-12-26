@@ -24,7 +24,10 @@
         .nav-btn { width: 100%; padding: 12px 15px; border: none; border-radius: 8px; background: rgba(255,255,255,0.05); color: #cbd5e1; text-align: left; font-family: inherit; font-size: 0.9rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 10px; font-weight: 500; margin-bottom: 5px; }
         .nav-btn:hover { background: rgba(255,255,255,0.1); color: white; }
         .nav-btn.active { background: var(--primary); color: white; font-weight: 600; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); border: 1px solid rgba(255,255,255,0.2); }
-        .nav-btn.tool { border: 1px solid rgba(255,255,255,0.1); background: transparent; }
+        
+        /* External Link Buttons */
+        .nav-btn.link { border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #94a3b8; }
+        .nav-btn.link:hover { border-color: white; color: white; }
 
         /* MAIN CONTENT */
         .main { flex: 1; position: relative; overflow-y: auto; display: flex; flex-direction: column; }
@@ -63,6 +66,9 @@
         .line-dot { width: 14px; height: 14px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
         .step-info h4 { margin: 0; font-weight: 700; font-size: 1.05rem; }
         .step-info p { margin: 4px 0 0; color: #64748b; font-size: 0.9rem; }
+
+        /* DISCLAIMER */
+        .disclaimer { margin-top: 20px; text-align: center; color: #94a3b8; font-size: 0.8rem; font-style: italic; }
         
         /* Line Colors */
         .bg-BTS_G { background: var(--c-bts-g); } .bg-BTS_S { background: var(--c-bts-s); }
@@ -95,11 +101,24 @@
     </div>
 
     <div class="nav-section">
+        <div class="nav-label">Booking & Official</div>
+        <button class="nav-btn link" onclick="window.open('https://dticket.railway.co.th/DTicketPublicWeb/home/Home', '_blank')">
+            🎫 Book SRT Tickets
+        </button>
+        <button class="nav-btn link" onclick="window.open('https://www.bts.co.th/index.html', '_blank')">
+            🚆 BTS Official Site
+        </button>
+        <button class="nav-btn link" onclick="window.open('https://metro.bemplc.co.th/Fare-Calculation', '_blank')">
+            🚇 MRT Official Site
+        </button>
+    </div>
+
+    <div class="nav-section">
         <div class="nav-label">Tools</div>
-        <button class="nav-btn tool" onclick="window.open('https://www.railway.co.th/SRTTimetable/StationList', '_blank')">
+        <button class="nav-btn link" onclick="window.open('https://www.railway.co.th/SRTTimetable/StationList', '_blank')">
             🕒 SRT Timetable
         </button>
-        <button class="nav-btn tool" onclick="window.open('https://www.bangkoktransitmap.com/', '_blank')">
+        <button class="nav-btn link" onclick="window.open('https://www.bangkoktransitmap.com/', '_blank')">
             🗺️ Official System Map
         </button>
     </div>
@@ -139,6 +158,8 @@
                     <div id="res-steps"></div>
                 </div>
             </div>
+
+            <div class="disclaimer">EasyRail Thailand can make mistakes, please check twice.</div>
         </div>
     </div>
 </div>
@@ -159,7 +180,7 @@
 
 <script>
     // ==========================================
-    // 1. ORDERED STATION DATABASE (Accurate Indexes)
+    // 1. ORDERED STATION DATABASE
     // ==========================================
     const lineData = {
         "BTS_G": ["Khu Khot", "Yaek Kor Por Aor", "Royal Thai Air Force Museum", "Bhumibol Adulyadej Hospital", "Saphan Mai", "Sai Yud", "Phahon Yothin 59", "Wat Phra Sri Mahathat", "11th Infantry Regiment", "Bang Bua", "Royal Forest Department", "Kasetsart University", "Sena Nikhom", "Ratchayothin", "Phahon Yothin 24", "Ha Yaek Lat Phrao", "Mo Chit", "Saphan Khwai", "Ari", "Sanam Pao", "Victory Monument", "Phaya Thai", "Ratchathewi", "Siam", "Chit Lom", "Phloen Chit", "Nana", "Asok", "Phrom Phong", "Thong Lo", "Ekkamai", "Phra Khanong", "On Nut", "Bang Chak", "Punnawithi", "Udom Suk", "Bang Na", "Bearing", "Samrong", "Pu Chao", "Chang Erawan", "Royal Thai Naval Academy", "Pak Nam", "Srinagarindra", "Phraek Sa", "Sai Luat", "Kheha"],
@@ -171,7 +192,6 @@
         "Yellow": ["Lat Phrao", "Phawana", "Chok Chai 4", "Lat Phrao 71", "Lat Phrao 83", "Mahat Thai", "Bang Kapi", "Yaek Lam Sali", "Si Kritha", "Hua Mak", "Kalantan", "Si Nut", "Srinagarindra 38", "Suan Luang Rama 9", "Si Udom", "Si Iam", "Si La Salle", "Si Bearing", "Si Dan", "Si Thepha", "Thipphawan", "Samrong"],
         "Pink": ["Nonthaburi Civic Center", "Khae Rai", "Sanambin Nam", "Samakkhi", "Irrigation Department", "Pak Kret", "Liang Mueang Pak Kret", "Chaeng Watthana-Pak Kret 28", "Si Rat", "Mueang Thong Thani", "Chaeng Watthana 14", "Government Complex", "TOT", "Lak Si", "Rajabhat Phranakhon", "Wat Phra Sri Mahathat", "Ram Inthra 3", "Lat Pla Khao", "Ram Inthra Kor Mor 4", "Maiyalap", "Vacharaphol", "Ram Inthra Kor Mor 6", "Khu Bon", "Ram Inthra Kor Mor 9", "Outer Ring Road", "Nopparat", "Bang Chan", "Setthabutbamphen", "Min Buri Market", "Min Buri"],
         "Gold": ["Krung Thon Buri", "Charoen Nakhon", "Khlong San"],
-        // SRT Eastern Line Sequence (Critical for Lat Krabang -> Phaya Thai logic)
         "SRT": ["Bangkok (Hua Lamphong)", "Urupong", "Phaya Thai", "Makkasan", "Asok", "Khlong Tan", "Sukhumvit 71", "Hua Mak", "Ban Thap Chang", "Soi Wat Lan Boon", "Lat Krabang", "Hua Takhe", "Chachoengsao", "Ayutthaya", "Lopburi", "Nakhon Sawan", "Phitsanulok", "Chiang Mai", "Saraburi", "Pak Chong", "Nakhon Ratchasima", "Buriram", "Surin", "Ubon Ratchathani", "Khon Kaen", "Udon Thani", "Nong Khai", "Nakhon Pathom", "Ratchaburi", "Phetchaburi", "Hua Hin", "Chumphon", "Surat Thani", "Hat Yai", "Pattaya", "Aranyaprathet", "Kanchanaburi", "Nam Tok", "Maha Chai", "Yala", "Su-ngai Kolok", "Padang Besar", "Sam Sen", "Bang Sue Junction", "Bang Khen", "Lak Si", "Don Mueang", "Rangsit"]
     };
 
@@ -194,7 +214,7 @@
             "BTS_G-MRT_B": "Asok / Sukhumvit",
             "BTS_G-Pink": "Wat Phra Sri Mahathat", 
             "BTS_G-Yellow": "Samrong",
-            "BTS_G-SRT": "Phaya Thai", /* CRITICAL FIX */
+            "BTS_G-SRT": "Phaya Thai",
             "BTS_S-Gold": "Krung Thon Buri", 
             "BTS_S-MRT_B": "Sala Daeng / Silom",
             "MRT_B-MRT_P": "Tao Poon", 
@@ -349,21 +369,18 @@
                 let dist = 5; 
                 
                 // Specific Logic for SRT -> BTS (Lat Krabang -> Phaya Thai)
-                // SRT Lat Krabang is idx 10. SRT Phaya Thai is idx 2. Distance = 8.
+                // Lat Krabang (10) -> Phaya Thai (2) = 8 stations
                 if(curr === 'SRT' && startObj.l === 'SRT') {
-                    // Look ahead: if next is BTS, we assume transfer at Phaya Thai
                     let interName = (next === 'BTS_G' ? 'Phaya Thai' : 'Bang Sue Junction');
                     let interObj = stations.find(s => s.l === 'SRT' && s.n === interName);
                     if(interObj) dist = Math.abs(startObj.idx - interObj.idx);
                 }
                 
                 // Specific Logic for BTS (Phaya Thai to Siam)
-                // BTS Phaya Thai is idx 21. BTS Siam is idx 23. Distance = 2.
+                // Phaya Thai (21) -> Siam (23) = 2 stations
                 if(curr === 'BTS_G' && next === undefined) {
-                    // Logic for last leg: Interchange to Destination
                     let prevLine = path[i-1];
                     let interName = getInterchange(prevLine, curr); 
-                    // Clean interchange name (e.g. "Phaya Thai" from "Phaya Thai")
                     let pureName = interName.split(' / ')[0];
                     let interObj = stations.find(s => s.l === curr && s.n === pureName);
                     if(interObj) dist = Math.abs(interObj.idx - endObj.idx);
@@ -387,10 +404,10 @@
         document.getElementById('res-price').innerText = `฿${totalCost}`;
     }
 
-    // --- 7. PRICING ENGINE (Tuned for Accuracy) ---
+    // --- 7. PRICING ENGINE ---
     function calculateExactFare(line, distance) {
         if(line === "SRT") {
-            // Eastern Line Commuter is extremely cheap
+            // Local City Train (Eastern Line etc)
             if(distance < 15) return 6; 
             return 20 + (distance * 2);
         }
